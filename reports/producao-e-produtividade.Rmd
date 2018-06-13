@@ -45,6 +45,8 @@ cacc = cacc %>%
          doutorados = Teses,
          mestrados_pprof = mestrados / `Docentes permanentes`, 
          doutorados_pprof = doutorados / `Docentes permanentes`)
+
+cacc
 ```
 
 
@@ -106,7 +108,7 @@ Produza aqui a sua versão desse texto, portanto:
 
 -----
 
-*SUBSTITUA ESSE TEXTO*
+*Regressão simples foi utilizada para analisar se a produção cientifíca dos programas de pós-graduação tem uma associação significativa com o número de docentes permanetes nas universidades. Os resultados da regressão indicam que um modelo com o 1 preditor no formato VarDep = `Docentes permanentes` explicam 95% da variância da variável de resposta (R2 = 0.81). A produção cientifíca, medida como unidade quantitativa representando a soma das produções cientifícas com qualis CAPES A1, A2 e B1 tem uma relação significativa com o erro (b = [4.3; 5.4], IC com 95%), com um influência média de 4.81 no aumento da produtividade em cada 4 anos nos dados analisados*
 
 -----
 
@@ -114,7 +116,7 @@ Dito isso, o que significa a relação que você encontrou na prática para ente
 
 -----
 
-*SUBSTITUA ESSE TEXTO PELA SUA DISCUSSÃO DOS RESULTADOS*
+*Por meio dos resutados produzidos com o modelo utilizado, foi possível observar que a existência de professores permanentes nos programas de pós-graduação das universidades federais brasileiras, influência em média 4.81 na produção total. Nesse sentido, o modelo utilizado, posibilita explicar 81% da variação da variável produtividade cientifíca.*
 
 -----
 
