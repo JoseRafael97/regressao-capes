@@ -29,7 +29,6 @@ Usaremos dados da penúltima avaliação da CAPES:
 
 ```{r}
 cacc = read_projectdata()
-
 glimpse(cacc)
 ```
 
@@ -44,9 +43,10 @@ cacc = cacc %>%
          mestrados = Dissertacoes, 
          doutorados = Teses,
          mestrados_pprof = mestrados / `Docentes permanentes`, 
-         doutorados_pprof = doutorados / `Docentes permanentes`)
-
-cacc
+         doutorados_pprof = doutorados / `Docentes permanentes`,
+         tem_doutorado = tolower(`Tem doutorado`))
+cacc %>%
+  filter(`Tem doutorado` == 'Não')
 ```
 
 
@@ -108,7 +108,7 @@ Produza aqui a sua versão desse texto, portanto:
 
 -----
 
-*Regressão simples foi utilizada para analisar se a produção cientifíca dos programas de pós-graduação tem uma associação significativa com o número de docentes permanetes nas universidades. Os resultados da regressão indicam que um modelo com o 1 preditor no formato VarDep = `Docentes permanentes` explicam 95% da variância da variável de resposta (R2 = 0.81). A produção cientifíca, medida como unidade quantitativa representando a soma das produções cientifícas com qualis CAPES A1, A2 e B1 tem uma relação significativa com o erro (b = [4.3; 5.4], IC com 95%), com um influência média de 4.81 no aumento da produtividade em cada 4 anos nos dados analisados*
+*Regressão simples foi utilizada para analisar se o número de docentes permanetes nas universidades tem uma associação significativa com a produção cientifíca nos programas de pós-graduação. Os resultados da regressão indicam que um modelo com o 1 preditor no formato VarDep = `Docentes permanentes` explicam 81% da variância da variável de resposta (R2 = 0.81). A produção cientifíca, medida como unidade quantitativa representando a soma das produções cientifícas com qualis CAPES A1, A2 e B1 tem uma relação significativa com o erro (b = [4.3; 5.4], IC com 95%). Nesse sentido, o modelo utilizado, posibilita explicar 81% da variação da variável produtividade cientifíca, onde quando quando o número de professsores, mais a produção tende a crescer, em média 4.8 no seu valor.*
 
 -----
 
@@ -116,7 +116,7 @@ Dito isso, o que significa a relação que você encontrou na prática para ente
 
 -----
 
-*Por meio dos resutados produzidos com o modelo utilizado, foi possível observar que a existência de professores permanentes nos programas de pós-graduação das universidades federais brasileiras, influência em média 4.81 na produção total. Nesse sentido, o modelo utilizado, posibilita explicar 81% da variação da variável produtividade cientifíca.*
+*Significa dizer, com base no modelo, que o número de professores permanentes tem um impacto positivamente no que diz respeito a produção cientifíca, tendo influência em média num aumento de 4.81 na produção total. É possível que a relação do número de professores imapacta no aumento da produção cientifica, devido a maior possibilidade colaborações, e nesse contexto, a possibilidade também da existência de mais pesquisas. Outro fator, é a possibilidade de um maior número de alunos sob orientação, o que também pode impacta nesse aspecto*
 
 -----
 
@@ -158,7 +158,8 @@ Considerando agora esses três fatores, o que podemos dizer sobre como cada um d
 
 -----
 
-**EXPLICAÇÃO**: *Substitua esse texto por texto feito tal qual o que usamos com uma variável*
+**EXPLICAÇÃO**: *Regressão múltipla foi utilizada para analisar se o número de Docentes permantes e número de alunos de mestrado e doutorado tem uma associação significativa com a Produção cientifíca. Os resultados da regressão indicam que um modelo com os 3 preditores no formato VarDep = `Docentes permanentes` + mestrados + doutorados explicam 87% da variância da variável de resposta (R2 = 0.87). Docentes permantes, medida como a quantidade de docentes permantes nas universidades federais, existe uma relação positiva com o erro (b = [2.59, 4.41], IC com 95%). No entanto, a variável de alunos de mestrado, definida como a quantidade de alunos cursando mestrado nessas instituições (b = [0.035, 0.032], IC com 95%), apresentando um relação não positiva. No mesmo cenário, a variável de alunos de doutorado, definida como a quantidade de alunos cursando doutorado nessas instituições, tem (b = [0.63, 1.37], IC com 95%) relação de intervalos positiva. Analisando os resultados, é possível afirmar, que o modelo consegue explicar que o aumento do número de professores permantes, impacta no aumento do valor da produção em 3.5 em média. Já o aumento do número de alunos mestrandos, segundo o modelo, diminue a produção em 0.2. Além disso, o aumento do número de alunos de doutorado, faz com que o número o valor da produção cresça em 1. A infuência dos alunos na produção não parece relavante para explicar a variação na variável de produção cientifíca. Um dos fatores que pode influênciar nesse aspecto é a existência de programas de pós-graduação só com mestrado o que pode tem impactado no valor negativo do mestrado na produção.*
+ 
 
 -----
 
@@ -168,3 +169,36 @@ Considerando agora esses três fatores, o que podemos dizer sobre como cada um d
 Diferente de medirmos produção (total produzido), é medirmos produtividade (produzido / utilizado). Abaixo focaremos nessa análise. Para isso crie um modelo que investiga como um conjunto de fatores que você julga que são relevantes se relacionam com a produtividade dos programas. Crie um modelo que avalie como _pelo menos 3 fatores_ se relacionam com a produtividade de um programa. Pode reutilizar fatores que já definimos e analizamos para produção. Mas cuidado para não incluir fatores que sejam função linear de outros já incluídos (ex: incluir A, B e um tercero C=A+B)
 
 Produza abaixo o modelo e um texto que comente (i) o modelo, tal como os que fizemos antes, e (ii) as implicações - o que aprendemos sobre como funcionam programas de pós no brasil?.
+
+
+```{r}
+modelo3 = lm(produtividade  ~ doutorados + `Docentes colaboradores` + tem_doutorado, data = cacc)
+#`Docentes visitantes`
+tidy(modelo3, conf.int = TRUE, conf.level = 0.95)
+glance(modelo3)
+```
+
+-----
+
+**(i) EXPLICAÇÃO**: *Regressão múltipla foi utilizada para analisar se o número de alunos de doutorado e número de docentes  e se a instituição possuir curso de doutorado tem uma associação com a Produtividade. Os resultados da regressão indicam que um modelo com os 3 preditores no formato VarDep = doutorados + `Docentes colaboradores` + tem_doutorado explicam pelo modelo 50% da variância da variável de resposta (R2 = 0.50). Alunos de doutorado, definida como a quantidade de alunos cursando doutorado nessas instituições, tem (b = [0.0073, 0.027], IC com 95%) relação de intervalos positiva, assim como a variável tem_doutorado, definida com sim quando a instituição tem no programa o curso de doutorado, tendo erro (b = [0.64, 1.77]), com intervalo apresentando valores positivos. No mais, a variável Docentes colaboradores, definida como o número de professore, tem erro (b = [-0.092, 0.042], IC c om 95%) relação de valores positivos e negativos, logo não se pode afirmar sua significância. Assim, a existência de cursos de doutorado nos programas de pós-graduação, pode impactar no modelo, cerca de 1.20 no valor da produtividade e o número de estudantes do curso de doutorado pode influênciar em média 0.017 na produtividade.*
+ 
+**(ii) EXPLICAÇÃO**: *Com base nos resultados, é possível afirmar que existe uma relação no que diz respeito a produtividade do programa de pós-graduação com a existência de cursos de doutorado de acordo com modelo 3 apresentado acima. Além disso, parece existir uma relaçao entre a produção cientifíca é o número de professores permanente, de acordo com modelo1 e modelo2. Em contrpartida considerando produção cientifíca, não existe um relação positiva em relação ao número de alunos mestrandos e também para o modelo3, não existe relação positiva entre o número de Docentes colaboradores e a produtividade.*
+ 
+
+-----
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
